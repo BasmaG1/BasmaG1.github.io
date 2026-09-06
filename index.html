@@ -130,11 +130,6 @@
     box-shadow:0 40px 90px -30px rgba(81,27,138,0.65), 0 0 0 1px rgba(137,27,129,0.18), 0 0 60px -18px rgba(27,138,81,0.18);
   }
   .viewfinder iframe{width:100%; height:100%; border:0; display:block; border-radius:6px; background:#000;}
-  .vf-pending{
-    position:absolute; left:50%; bottom:16px; transform:translateX(-50%); z-index:5;
-    background:rgba(18,14,26,0.75); color:var(--ink); font-family:'Space Mono',monospace;
-    font-size:12px; letter-spacing:.04em; padding:7px 14px; border-radius:999px; pointer-events:none;
-  }
   .vf-corner{position:absolute; width:20px; height:20px; border:2px solid var(--accent); pointer-events:none; transition:border-color .3s ease;}
   .vf-corner.tl{top:10px; left:10px; border-right:none; border-bottom:none; border-color:var(--purple);}
   .vf-corner.tr{top:10px; right:10px; border-left:none; border-bottom:none; border-color:var(--magenta);}
@@ -489,6 +484,7 @@
 <div id="introOverlay">
   <div id="introLogo">
     <canvas id="introCanvas"></canvas>
+    <span class="intro-tag">MEDIA ARTIST — TORONTO / CAIRO / JEDDAH</span>
   </div>
 </div>
 
@@ -515,9 +511,8 @@
   <section class="panel active" id="reel">
     <p class="kicker">New Media Artist</p>
     <h1 class="hero-tag" id="heroTag"></h1>
-    <div class="viewfinder" id="reelViewfinder">
-      <img src="images/reel-poster.jpg" alt="Reel preview" style="width:100%;height:100%;object-fit:cover;display:block;">
-      <div class="vf-pending" id="reelPending">Video coming soon</div>
+    <div class="viewfinder">
+      <video controls playsinline preload="metadata" poster="images/reel-poster.jpg" style="width:100%;height:100%;display:block;border-radius:6px;background:#000;" src="videos/reel.mp4">Your browser doesn't support embedded video.</video>
       <div class="vf-corner tl"></div><div class="vf-corner tr"></div>
       <div class="vf-corner bl"></div><div class="vf-corner br"></div>
     </div>
@@ -631,49 +626,21 @@
 <div class="secret-toast" id="secretToast">🎬 You found the secret — thanks for exploring! — Basma</div>
 
 <script>
-  // ============================================================
-  // TONIGHT: paste your two YouTube video IDs here, replacing the
-  // placeholder text between the quotes (keep the quotes).
-  // The ID is the part of the YouTube link after "v=" or after
-  // "youtu.be/" — e.g. for https://youtu.be/dQw4w9WgXcQ the ID is
-  // dQw4w9WgXcQ (just that, nothing else from the link).
-  // ============================================================
-  const REEL_YOUTUBE_ID  = 'PASTE-REEL-VIDEO-ID-HERE';
-  const LATCH_YOUTUBE_ID = 'PASTE-LATCH-VIDEO-ID-HERE';
-
-  // once a real ID is pasted in above, swap the hero's poster image for the
-  // actual YouTube embed — until then it just shows the poster + a label.
-  (function setupReel(){
-    if(!REEL_YOUTUBE_ID || REEL_YOUTUBE_ID.startsWith('PASTE-')) return;
-    const vf = document.getElementById('reelViewfinder');
-    if(!vf) return;
-    const pending = document.getElementById('reelPending');
-    if(pending) pending.remove();
-    const img = vf.querySelector('img');
-    if(img) img.remove();
-    const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube-nocookie.com/embed/${REEL_YOUTUBE_ID}?rel=0&modestbranding=1`;
-    iframe.title = 'Reel';
-    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
-    iframe.allowFullscreen = true;
-    vf.insertBefore(iframe, vf.firstChild);
-  })();
-
   const CH = ['var(--magenta)','var(--raspberry)','var(--emerald)','var(--purple)','var(--olive)'];
 
   const videos = [
-    {type:"youtube", id:"cfMIfu2KUjE", src:"https://www.youtube-nocookie.com/embed/cfMIfu2KUjE?rel=0&modestbranding=1", title:"To Those Willing to See", desc:"A 360° community documentary exploring place, perspective, and immersive storytelling through an equirectangular format designed for dome projection. Please watch directly on YouTube to experience the video in 360°.", tags:["360° Media","Dome Community Documentary","Equirectangular Render"]},
-    {type:"youtube", id:"QSEIJh9z2ic", src:"https://www.youtube-nocookie.com/embed/QSEIJh9z2ic?rel=0&modestbranding=1", title:"Rise of the Droids", desc:"A virtual production project combining green-screen techniques and on-set filming to create an immersive cinematic scene.", tags:["Virtual Production","Green Screen","On-Set Filming"]},
-    {type:"youtube", id:"lUffKXTvTMc", src:"https://www.youtube-nocookie.com/embed/lUffKXTvTMc?rel=0&modestbranding=1", title:"Imagine", desc:"An experimental mixed-media film combining Blender, 360° camera footage, and digital imagery to explore alternative ways of constructing a visual narrative.", tags:["Experimental Film","Mixed Media","Blender","360° Camera"]},
-    {type:"youtube", id:"EzaQpzzWMCI", src:"https://www.youtube-nocookie.com/embed/EzaQpzzWMCI?rel=0&modestbranding=1", title:"Miracle — Film Render", desc:"A 3D experimental music video created using Blender and Unreal Engine. This rendered view presents the project as a cinematic 3D environment, while the following video explores the same work as an equirectangular dome experience.", tags:["3D Film","Equirectangular Render","Blender","Unreal Engine"]},
-    {type:"youtube", id:"EmfevZNtgSc", src:"https://www.youtube-nocookie.com/embed/EmfevZNtgSc?rel=0&modestbranding=1", title:"3D Inflated Text", desc:"Inflated 3D text created in Blender, exploring color changes, dynamic lighting, soft shading, and the visual qualities of digital materials.", tags:["Blender","3D Modeling"]},
-    {type:"youtube", id:"NJ__vWXrw4g", src:"https://www.youtube-nocookie.com/embed/NJ__vWXrw4g?rel=0&modestbranding=1", title:"Miracle — 360° Camera View", desc:"A 360° camera view of the Miracle project, presenting the environment from an immersive perspective.", tags:["360° Camera"]},
-    {type:"youtube", id:"_rMro_11S-U", src:"https://www.youtube-nocookie.com/embed/_rMro_11S-U?rel=0&modestbranding=1", title:"Fever Dream", desc:"An experimental music video created using photogrammetry and Blender to build and transform a digital environment. The project combines 3D renders, environmental construction, and visual storytelling to create a dreamlike atmosphere.", tags:["Blender Renders","Photogrammetry","Environment Building","Music Video","Storytelling"]},
-    {type:"youtube", id:"AMZfj46krvI", src:"https://www.youtube-nocookie.com/embed/AMZfj46krvI?rel=0&modestbranding=1", title:"What If Monsters, Inc. Was Horror?", desc:"An experimental re-edit that reimagines Monsters, Inc. through a horror-inspired lens. The project uses editing, pacing, and storytelling to transform the tone and meaning of familiar footage.", tags:["Editing","DaVinci Resolve","Storytelling"]},
-    {type:"youtube", id:"coI2gA97i9A", src:"https://www.youtube-nocookie.com/embed/coI2gA97i9A?rel=0&modestbranding=1", title:"ROM Museum Tour", desc:"A 360° walkthrough of the Royal Ontario Museum, using immersive camera movement to explore the museum space and create a guided visual experience. Please watch directly on YouTube to experience the video in 360°.", tags:["Walkthrough","360° Camera","Storytelling"]},
-    {type:"local", file:"fish.mp4", poster:"images/fish-poster.jpg", title:"Just Keep Swimming", desc:"A copper fish pendant animated to swim through the frame using keyframe animation and a parallax camera in After Effects.", tags:["Parallax Effect","Keyframe Animation","After Effects"]},
-    {type:"local", file:"ttc.mp4", poster:"images/ttc-poster.jpg", title:"Silent Ride", desc:"A frame-by-frame stop-motion animation created with articulated paper figures, bringing handmade paper characters to life through physical movement and sequential animation.", tags:["Stop-Motion Animation","Paper Crafts","Frame-by-Frame"]},
-    {type:"youtube", id:LATCH_YOUTUBE_ID, poster:"images/latch-poster.jpg", src:`https://www.youtube-nocookie.com/embed/${LATCH_YOUTUBE_ID}?rel=0&modestbranding=1`, title:"Stay the Night", desc:"A VJ and live-visuals piece created and performed in Resolume Arena, exploring real-time visual composition and performance.", tags:["VJ","Live Visuals","Resolume Arena"]},
+    {type:"youtube", id:"cfMIfu2KUjE", src:"https://www.youtube-nocookie.com/embed/cfMIfu2KUjE?rel=0&modestbranding=1", title:"\"To Those Willing to See\" — 360° Dome Documentary", desc:"A 360° dome documentary presentation.", tags:["360","Dome","Documentary"]},
+    {type:"youtube", id:"QSEIJh9z2ic", src:"https://www.youtube-nocookie.com/embed/QSEIJh9z2ic?rel=0&modestbranding=1", title:"Rise of the Droids — Virtual Production", desc:"Virtual production project.", tags:["Virtual Production"]},
+    {type:"youtube", id:"lUffKXTvTMc", src:"https://www.youtube-nocookie.com/embed/lUffKXTvTMc?rel=0&modestbranding=1", title:"Imagine — Experimental Film", desc:"Experimental short film.", tags:["Experimental","Film"]},
+    {type:"youtube", id:"EzaQpzzWMCI", src:"https://www.youtube-nocookie.com/embed/EzaQpzzWMCI?rel=0&modestbranding=1", title:"Dome Presentation — Rendered View", desc:"Rendered view of a music video made in Blender and Unreal.", tags:["Blender","Unreal Engine"]},
+    {type:"youtube", id:"EmfevZNtgSc", src:"https://www.youtube-nocookie.com/embed/EmfevZNtgSc?rel=0&modestbranding=1", title:"3D Inflated Text — Blender", desc:"Inflated 3D text created in Blender, exploring color changes, dynamic lighting, and soft shading.", tags:["Blender","3D Text"]},
+    {type:"youtube", id:"NJ__vWXrw4g", src:"https://www.youtube-nocookie.com/embed/NJ__vWXrw4g?rel=0&modestbranding=1", title:"Dome Presentation — 360 View", desc:"Music video made in Blender and Unreal, shown as a 360 camera view of a dome presentation.", tags:["360","Dome","Blender"]},
+    {type:"youtube", id:"_rMro_11S-U", src:"https://www.youtube-nocookie.com/embed/_rMro_11S-U?rel=0&modestbranding=1", title:"Fever Dream — Blender & Photogrammetry", desc:"A Blender and photogrammetry project.", tags:["Blender","Photogrammetry"]},
+    {type:"youtube", id:"AMZfj46krvI", src:"https://www.youtube-nocookie.com/embed/AMZfj46krvI?rel=0&modestbranding=1", title:"Metahuman Dance Animation", desc:"Character animation in Unreal Engine.", tags:["Metahuman","Unreal Engine"]},
+    {type:"youtube", id:"coI2gA97i9A", src:"https://www.youtube-nocookie.com/embed/coI2gA97i9A?rel=0&modestbranding=1", title:"Pre-visualization", desc:"Built in Unreal Engine using Metahumans and Face Live Link.", tags:["Previz","Unreal Engine"]},
+    {type:"local", file:"fish.mp4", poster:"images/fish-poster.jpg", title:"Fish — 3D Illustration", desc:"3D fish study, illustrated environment and materials.", tags:["3D","Illustration"]},
+    {type:"local", file:"ttc.mp4", poster:"images/ttc-poster.jpg", title:"TTC — Stop Motion (with sound)", desc:"Stop-motion animation project, shot and edited with sound design.", tags:["Stop Motion","Animation"]},
+    {type:"local", file:"latch.mp4", poster:"images/latch-poster.jpg", title:"Latch × Stay The Night — Live Visuals", desc:"VJ / live-visuals piece built and performed in Resolume Arena.", tags:["VJ","Resolume","Live Visuals"]},
   ];
 
   const images = [
@@ -699,10 +666,7 @@
     const num = String(i+1).padStart(2,'0');
     const slide = document.createElement('div');
     slide.className = 'slide';
-    const isRealYoutubeId = v.id && !String(v.id).startsWith('PASTE-');
-    const thumb = v.type === 'youtube'
-      ? (isRealYoutubeId ? `https://img.youtube.com/vi/${v.id}/hqdefault.jpg` : v.poster)
-      : v.poster;
+    const thumb = v.type === 'youtube' ? `https://img.youtube.com/vi/${v.id}/hqdefault.jpg` : v.poster;
     const card = document.createElement('div');
     card.className = 'slide-card spotlight' + (thumb ? '' : ' no-thumb');
     card.style.setProperty('--slide-ch', ch);
