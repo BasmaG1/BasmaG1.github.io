@@ -1283,7 +1283,7 @@
         this.x    = x;
         this.y    = y;
         this.age  = 0;
-        this.life = 150 + Math.random() * 30; // ~2.5-3s at 60fps: short trail, not a lingering carpet
+        this.life = 55 + Math.random() * 10; // ~1s at 60fps: quick puff, not a lingering carpet
 
         this.petalCount = 5 + Math.floor(Math.random() * 6);
         this.maxRadius  = 14 + Math.random() * 20;
@@ -1334,8 +1334,8 @@
         this.age++;
         this.y += this.vy * 0.25;
 
-        const BLOOM_IN = 18;
-        const FADE_OUT = 45;
+        const BLOOM_IN = 14;
+        const FADE_OUT = 20;
 
         let scale = 1, alpha = 1;
 
@@ -1477,7 +1477,7 @@
         this.size  = 3 + Math.random() * 5;
         this.color = color;
         this.alpha = 0.7 + Math.random() * 0.3;
-        this.life  = 120 + Math.random() * 80;
+        this.life  = 30 + Math.random() * 20; // short-lived trailing petal, gone well under 1s
         this.age   = 0;
       }
 
@@ -1514,7 +1514,7 @@
         flowers.push(new Flower(mx, my));
         lastSpawn = now;
         flowers.forEach(f => {
-          if (f.age > f.life - 45 && Math.random() < 0.3) {
+          if (f.age > f.life - 15 && Math.random() < 0.3) {
             petals.push(new Petal(f.x, f.y, f.petalCol));
           }
         });
