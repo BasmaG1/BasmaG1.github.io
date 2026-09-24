@@ -588,17 +588,49 @@
   <!-- RESUME -->
 <section class="panel" id="resume">
   <h2>Resume</h2>
+
   <div class="resume-grid">
-    <a class="resume-card" href="images/CV.pdf" target="_blank" rel="noopener" style="--doc-ch:var(--purple)">
+
+    <!-- CV -->
+    <a
+      class="resume-card"
+      href="images/CV.pdf"
+      onclick="openLightbox('resume', 0); return false;"
+      style="--doc-ch:var(--purple)"
+    >
       <span class="resume-frame spotlight">
-        <span style="display:flex; align-items:center; justify-content:center; height:100%; font-size:2rem;">
-          CV / RESUME
+        <span class="resume-preview-text">
+          CV
         </span>
       </span>
-      <span class="resume-open">VIEW RESUME <span>↗</span></span>
-      </a>
-    </div>
-  </section>
+
+      <span class="resume-open">
+        VIEW FULL SIZE <span>↗</span>
+      </span>
+    </a>
+
+
+    <!-- Diploma -->
+    <a
+      class="resume-card"
+      href="images/diploma.jpg"
+      onclick="openLightbox('resume', 1); return false;"
+      style="--doc-ch:var(--purple)"
+    >
+      <span class="resume-frame spotlight">
+        <img
+          src="images/diploma.jpg"
+          alt="Basma Gado Diploma"
+        >
+      </span>
+
+      <span class="resume-open">
+        VIEW FULL SIZE <span>↗</span>
+      </span>
+    </a>
+
+  </div>
+</section>
 
   <!-- ABOUT -->
   <section class="panel" id="about">
@@ -997,32 +1029,88 @@
   // ---- lightbox: shared full-screen viewer for the image gallery, resume docs,
   // and the about photo — each opens its own navigable set (or a set of one,
   // which just hides the prev/next arrows) with an optional caption ----
-  let lightboxSet = [];
-  let lightboxIndex = -1;
-  const LIGHTBOX_SETS = {
-    images: images,
-    resume: [
-      {src:'images/cv.jpg', alt:'Basma Gado resume / CV', title:'CV'},
-      {src:'images/diploma.jpg', alt:'York University Bachelor of Fine Arts with Honours diploma for Basma Essam Gado', title:'Diploma'}
-    ],
-    about: [
-      {src:'images/about.jpg', alt:'Basma Gado'}
-    ]
-  };
-  function renderLightbox(){
-    const item = lightboxSet[lightboxIndex];
-    if(!item) return;
-    const img = document.getElementById('lightboxImg');
+const LIGHTBOX_SETS = {
+  images: images,
+
+  resume: [
+    {
+      src: 'images/CV.pdf',
+      type: 'pdf',
+      alt: 'Basma Gado resume / CV',
+      title: 'CV'
+    },
+    {
+      src: 'images/diploma.jpg',
+      type: 'image',
+      alt: 'York University Bachelor of Fine Arts with Honours diploma for Basma Essam Gado',
+      title: 'Diploma'
+    }
+  ],
+
+  about: [
+    {
+      src: 'images/about.jpg',
+      type: 'image',
+      alt: 'Basma Gado'
+    }
+  ]
+};
+function renderLightbox(){
+  const item = lightboxSet[lightboxIndex];
+  if(!item) return;
+
+  const img = document.getElementById('lightboxImg');
+  const caption = document.getElementById('lightboxCaption');
+  const title = item.title || '';
+  const desc = item.cap || '';
+
+  // Remove any previous PDF viewer
+  const existingPdf = document.getElementById('lightboxPdf');
+  if(existingPdf) existingPdf.remove();
+
+  if(item.type === 'pdf'){
+
+    // Hide the normal image
+    img.style.display = 'none';
+
+    // Create PDF viewer
+    const pdf = document.createElement('iframe');
+
+    pdf.id = 'lightboxPdf';
+    pdf.src = item.src;
+    pdf.title = item.title || 'PDF document';
+
+    pdf.style.width = '90vw';
+    pdf.style.height = '90vh';
+    pdf.style.maxWidth = '1200px';
+    pdf.style.border = 'none';
+    pdf.style.background = '#fff';
+    pdf.style.display = 'block';
+
+    img.parentNode.appendChild(pdf);
+
+  } else {
+
+    // Show normal image
+    img.style.display = 'block';
     img.src = item.src;
     img.alt = item.alt || item.title || '';
-    const title = item.title || '';
-    const desc = item.cap || '';
-    document.getElementById('lightboxCaptionTitle').textContent = title;
-    document.getElementById('lightboxCaptionDesc').textContent = desc;
-    document.getElementById('lightboxCaption').classList.toggle('show', !!(title || desc));
-    const multi = lightboxSet.length > 1;
-    document.getElementById('lightboxPrev').hidden = !multi;
-    document.getElementById('lightboxNext').hidden = !multi;
+  }
+
+  // Caption
+  document.getElementById('lightboxCaptionTitle').textContent = title;
+  document.getElementById('lightboxCaptionDesc').textContent = desc;
+
+  caption.classList.toggle(
+    'show',
+    !!(title || desc)
+  );
+
+  // Previous / Next buttons
+  const multi = lightboxSet.length > 1;
+
+  document.getElementById('lightboxPrev').hidden = !multi;
+  document.getElementById('lightboxNext').hidden = !multi;
   }
   function openLightbox(setName, index){
     const set = LIGHTBOX_SETS[setName];
