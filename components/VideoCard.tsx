@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 import { VideoProject } from "@/lib/data";
 
 interface VideoCardProps {
@@ -19,30 +18,16 @@ export function VideoCard({
   accentColor,
   onClick,
 }: VideoCardProps) {
-  const isRealYoutubeId = video.id && !String(video.id).startsWith("PASTE-");
+  const thumbSrc =
+    video.poster ||
+    (video.id ? `/images/thumbnails/${video.id}.jpg` : undefined);
 
-  // Fix 2: Request maxresdefault.jpg (1280x720) for YouTube instead of 480x360 hqdefault.jpg
-  const defaultThumb =
-    video.type === "youtube"
-      ? isRealYoutubeId
-        ? `https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`
-        : video.poster
-      : video.poster;
-
-  const [imgSrc, setImgSrc] = useState<string | undefined>(defaultThumb);
   const num = String(index + 1).padStart(2, "0");
-
-  const handleError = () => {
-    // If maxresdefault is not available for a YouTube video, fall back to hqdefault
-    if (video.type === "youtube" && video.id && imgSrc?.includes("maxresdefault")) {
-      setImgSrc(`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`);
-    }
-  };
 
   return (
     <button
       type="button"
-      className={`vscroll-card ${!imgSrc ? "no-thumb" : ""}`}
+      className={`vscroll-card ${!thumbSrc ? "no-thumb" : ""}`}
       style={
         {
           "--card-ch": accentColor,
@@ -54,16 +39,15 @@ export function VideoCard({
       onClick={onClick}
     >
       <span className="vscroll-thumb">
-        {imgSrc && (
+        {thumbSrc && (
           <Image
-            src={imgSrc}
-            alt=""
+            src={thumbSrc}
+            alt={video.title}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1200px"
-            quality={90}
+            quality={95}
             priority={index === 0}
             style={{ objectFit: "cover" }}
-            onError={handleError}
           />
         )}
       </span>
