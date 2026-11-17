@@ -513,7 +513,6 @@
     transition:opacity .4s ease, transform .4s cubic-bezier(.2,.8,.2,1);
   }
   .secret-toast.show{opacity:1; transform:translate(-50%,0);}
-}
   @media (max-width:640px){
     .logo{width:210px; height:38px;}
     #introLogo{height:min(22vw,90px);}
@@ -521,9 +520,239 @@
     .deck{display:none; flex-direction:column; position:static;}
     .deck.open{display:flex;}
   }
+
+  /* ---------- exhibition tab ---------- */
+  main:has(#exhibition.active){max-width:none; padding:0;}
+  #exhibition [hidden]{display:none !important;}
+  .exh-split{display:grid; grid-template-columns:1fr 1fr; min-height:calc(100vh - 125px);}
+  .exh-card{
+    display:flex; flex-direction:column; text-align:left; cursor:pointer;
+    background:var(--bg); color:var(--text-dark); border:0; border-left:3px solid var(--text-dark);
+    padding:0; margin:0; font:inherit; overflow:hidden;
+  }
+  .exh-card:first-child{border-left:0;}
+  .exh-card-img{flex:1; min-height:52vh; overflow:hidden; background:#000;}
+  .exh-card-img img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s ease;}
+  .exh-card-text{padding:24px 30px 40px;}
+  .exh-card-title{
+    font-family:'Unbounded',sans-serif; font-weight:900; font-size:clamp(20px,2.6vw,36px);
+    line-height:1.12; margin:0 0 10px; color:var(--text-dark);
+  }
+  .exh-card-title .arrow{display:inline-block; transition:transform .25s ease; color:var(--raspberry);}
+  .exh-card-sub{margin:0; font-size:clamp(15px,1.3vw,18px); line-height:1.5; color:var(--text-dark); font-weight:500;}
+  .exh-card:hover .exh-card-img img,
+  .exh-card:focus-visible .exh-card-img img{transform:scale(1.06);}
+  .exh-card:hover .arrow,
+  .exh-card:focus-visible .arrow{transform:translateX(10px);}
+  .exh-card:hover .exh-card-title{text-decoration:underline; text-decoration-thickness:3px; text-underline-offset:6px; text-decoration-color:var(--raspberry);}
+  .exh-card:focus-visible{outline:3px solid var(--raspberry); outline-offset:-3px;}
+
+  .exh-topic{max-width:1080px; margin:0 auto; padding:48px 22px 100px;}
+  .exh-back{
+    background:none; border:0; padding:0; margin:0 0 22px; cursor:pointer;
+    font-family:'Space Mono',monospace; font-size:15px; font-weight:700; letter-spacing:.08em; color:var(--text-dark);
+  }
+  .exh-back:hover{color:var(--raspberry);}
+  .exh-topic-sub{margin:-8px 0 28px; font-size:18px; font-weight:500; color:var(--text-dark);}
+  .exh-hero{display:block; width:100%; padding:0; border:0; background:none; cursor:zoom-in; border-radius:7px; overflow:hidden; margin:0 0 34px;}
+  .exh-hero img{width:100%; display:block;}
+  .exh-content{display:flex; flex-direction:column; gap:34px;}
+  .exh-content p{margin:0; font-size:18px; line-height:1.65; color:var(--text-dark);}
+  .exh-content img, .exh-content video{width:100%; display:block; border-radius:7px;}
+  .exh-content .exh-embed{aspect-ratio:16/9; width:100%; border:0; border-radius:7px; background:#000;}
+  .exh-content figcaption{margin-top:10px; font-size:16px; color:var(--text-dark);}
+  @media (max-width:800px){
+    .exh-split{grid-template-columns:1fr;}
+    .exh-card{border-left:0; border-top:3px solid var(--text-dark);}
+    .exh-card:first-child{border-top:0;}
+    .exh-card-img{min-height:38vh;}
+  }
+
+  /* resume download + exhibition layout */
+  .resume-actions{margin:-6px 0 18px; text-align:center;}
+  .btn-download{
+    display:inline-block; text-decoration:none; background:var(--raspberry); color:#fff;
+    font-family:'Space Mono',monospace; font-weight:700; font-size:14px; letter-spacing:.08em;
+    padding:13px 22px; border-radius:var(--radius); transition:background .2s ease, transform .2s ease;
+  }
+  .btn-download:hover{background:var(--purple); transform:translateY(-2px);}
+  .exh-row{display:grid; grid-template-columns:minmax(0,0.8fr) minmax(0,1.4fr); gap:28px; align-items:start; margin:0 0 34px;}
+  .exh-flyer{display:block; width:100%; padding:0; border:0; background:none; cursor:zoom-in; border-radius:7px; overflow:hidden;}
+  .exh-flyer img{width:100%; display:block;}
+  .exh-video{width:100%; aspect-ratio:16/9; display:block; border-radius:7px; background:#000; position:sticky; top:130px;}
+  .exh-item h3{font-family:'Unbounded',sans-serif; font-size:18px; font-weight:700; margin:0 0 8px; color:var(--text-dark);}
+  @media (max-width:800px){ .exh-row{grid-template-columns:1fr;} .exh-video{position:static;} }
   @media (prefers-reduced-motion: reduce){
     *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important;}
   }
+
+  /* =====================================================================
+     DESIGN SYSTEM v2 — consistent identity, content-specific layouts.
+     (Loaded last, so it refines the earlier rules. Content is unchanged.)
+     Tokens: one container width, one heading scale, one button style,
+     purple as the single accent, near-black text on the light page.
+     ===================================================================== */
+  :root{
+    --topbar-h:70px;
+    --container:1080px;
+    --ink-dark:#141414;
+    --muted:#3d3d3d;
+    --rule:rgba(20,20,20,0.16);
+  }
+
+  /* ---- header: one unified bar ---- */
+  .topbar{height:var(--topbar-h); padding:0 24px; box-sizing:border-box; border-bottom:0; background:rgba(10,8,16,0.96);}
+  .deck{top:var(--topbar-h); padding:4px 20px 8px; background:rgba(10,8,16,0.96); gap:4px;}
+  .tab-btn{color:#cfc9de; font-size:13px; letter-spacing:.09em; padding:10px 14px; border-radius:var(--radius);}
+  .tab-btn .tab-dots{display:none;}
+  .tab-btn:hover{color:#fff; background:rgba(255,255,255,0.09);}
+  .tab-btn.active{color:#fff; background:var(--purple); box-shadow:none;}
+  @media (max-width:640px){ :root{--topbar-h:56px;} .tab-btn{font-size:14px; padding:12px 14px;} }
+
+  /* ---- page frame + type scale ---- */
+  main{max-width:var(--container); padding:40px 24px 96px;}
+  @media (max-width:640px){ main{padding:28px 18px 72px;} }
+  h2{font-size:clamp(26px,3.2vw,34px); font-weight:800; letter-spacing:0; line-height:1.15; margin-bottom:28px; color:var(--ink-dark);}
+  .kicker{color:var(--ink-dark);}
+  .panel{animation:fadeIn .25s ease;}
+  .panel.active > *{animation:none;}              /* no staggered entrance */
+  .spotlight::after{display:none;}                /* no cursor-follow glare */
+  .chip:hover{transform:none;}
+  #bloomCanvas{display:none;}                     /* decorative cursor flowers off */
+  .cur{display:none !important;}
+  body.no-native-cursor{cursor:auto !important;}
+
+  /* shared: primary button, tags, section headings */
+  .btn-download, .send-btn{
+    background:var(--purple); color:#fff; border:0; border-radius:var(--radius); box-shadow:none;
+    font-family:'Space Mono',monospace; font-weight:700; font-size:13px; letter-spacing:.08em;
+    padding:13px 22px; cursor:pointer; text-decoration:none; display:inline-block; transition:background .2s ease;
+  }
+  .btn-download:hover, .send-btn:hover{background:#3a1266; transform:none; box-shadow:none;}
+  .btn-download:focus-visible, .send-btn:focus-visible{outline:3px solid var(--ink-dark); outline-offset:3px;}
+  .tag{font-size:11px; letter-spacing:.04em; padding:3px 10px; border-radius:20px; color:var(--ink-dark); border:1px solid rgba(20,20,20,0.3); background:transparent;}
+  .section-head{margin:0 0 20px; padding-bottom:12px; border-bottom:1px solid var(--rule);}
+  .section-head h3{font-size:clamp(18px,2vw,22px); font-weight:800; color:var(--ink-dark); margin:0 0 4px;}
+  .section-head p{margin:0; font-size:14.5px; color:var(--muted);}
+
+  /* ---- REEL (home): one large player, calm frame ---- */
+  .viewfinder{background:#000; padding:0; border-radius:8px; box-shadow:0 14px 36px -18px rgba(0,0,0,0.45);}
+  .vf-corner{display:none;}
+  .hero-tag{margin-bottom:22px;}
+
+  /* ---- VIDEOS · reels: vertical 9:16 cards (grid → carousel on phones) ---- */
+  .reel-strip{
+    width:auto; left:auto; right:auto; margin:0 0 56px; padding:0;
+    display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:24px;
+  }
+  .reel-frame{border-radius:10px; box-shadow:0 0 0 1px var(--rule), 0 10px 26px -16px rgba(0,0,0,0.45);}
+  .reel-card{gap:10px;}
+  .reel-title{font-size:15px; font-weight:700; color:var(--ink-dark); padding:0;}
+  .reel-desc{font-size:13.5px; line-height:1.5; color:var(--muted); display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;}
+  .reel-tags{padding:0;}
+  .reel-tags .tag{font-size:11px; color:var(--ink-dark); border-color:rgba(20,20,20,0.3); background:transparent;}
+  .reel-btn:hover, .reel-btn:focus-visible{background:var(--purple); transform:none;}
+  @media (max-width:800px){ .reel-strip{grid-template-columns:repeat(2, minmax(0,1fr)); gap:22px;} }
+  @media (max-width:560px){
+    .reel-strip{
+      display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+      margin-left:-18px; margin-right:-18px; padding:0 18px 12px; scroll-padding:0 18px;
+    }
+    .reel-card{flex:0 0 66%; scroll-snap-align:start;}
+  }
+
+  /* ---- VIDEOS · films: vertical list, large 16:9 players ---- */
+  .video-scroll-list{width:auto; left:auto; right:auto; margin:0; display:flex; flex-direction:column; gap:0;}
+  .film{padding:0 0 44px; margin:0 0 44px; border-bottom:1px solid var(--rule);}
+  .film:last-child{border-bottom:0; margin-bottom:0; padding-bottom:0;}
+  .film-player{position:relative; aspect-ratio:16/9; width:100%; background:#000; border-radius:8px; overflow:hidden; box-shadow:0 0 0 1px var(--rule);}
+  .film-player iframe, .film-player video{position:absolute; inset:0; width:100%; height:100%; border:0; display:block; background:#000; object-fit:contain;}
+  .film-facade{position:absolute; inset:0; width:100%; height:100%; padding:0; border:0; cursor:pointer; background:#0a0810; display:block;}
+  .film-facade img{width:100%; height:100%; object-fit:cover; display:block; transition:opacity .2s ease;}
+  .film-facade:hover img{opacity:.88;}
+  .film-play{
+    position:absolute; left:50%; top:50%; width:72px; height:72px; margin:-36px 0 0 -36px; border-radius:50%;
+    background:rgba(10,8,16,0.72); color:#fff; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 0 2px rgba(255,255,255,0.85); transition:background .2s ease;
+  }
+  .film-play svg{width:34px; height:34px; margin-left:4px;}
+  .film-facade:hover .film-play, .film-facade:focus-visible .film-play{background:var(--purple);}
+  .film-facade:focus-visible{outline:3px solid var(--purple); outline-offset:-3px;}
+  .film-info{margin-top:18px; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.35fr); gap:12px 40px; align-items:start;}
+  .film-head{display:flex; flex-direction:column; gap:10px; align-items:flex-start;}
+  .film-num{font-family:'Space Mono',monospace; font-size:13px; font-weight:700; letter-spacing:.1em; color:var(--purple);}
+  .film-title{font-family:'Unbounded',sans-serif; font-weight:800; font-size:clamp(19px,2.3vw,26px); line-height:1.2; margin:0; color:var(--ink-dark);}
+  .film-tags{display:flex; flex-wrap:wrap; gap:6px;}
+  .film-desc{margin:0; font-size:16px; line-height:1.65; color:var(--ink-dark); max-width:62ch;}
+  @media (max-width:760px){ .film-info{grid-template-columns:1fr;} .film-play{width:60px; height:60px; margin:-30px 0 0 -30px;} .film-play svg{width:28px; height:28px;} }
+
+  /* ---- IMAGES: large renders at natural aspect, details underneath ---- */
+  .image-grid{
+    width:auto; left:auto; right:auto; margin:0; padding:0;
+    display:block; column-count:2; column-gap:36px;
+  }
+  .image-card{break-inside:avoid; -webkit-column-break-inside:avoid; margin:0 0 40px; display:block; cursor:zoom-in;}
+  .image-frame{aspect-ratio:auto; background:transparent; border-radius:6px; box-shadow:0 0 0 1px var(--rule); transform:none !important;}
+  .image-card:hover .image-frame, .image-card:focus-visible .image-frame{transform:none; box-shadow:0 0 0 2px var(--purple);}
+  .image-frame img{height:auto; object-fit:contain; transform:none !important;}
+  .image-title{font-size:16px; font-weight:800; margin:14px 0 0; color:var(--ink-dark);}
+  .image-cap{font-size:15px; line-height:1.55; color:var(--muted); margin:6px 0 0;}
+  @media (max-width:700px){ .image-grid{column-count:1;} }
+
+  /* ---- RESUME: documents shown whole (never cropped or zoomed) ---- */
+  .resume-actions{text-align:left; margin:-6px 0 26px;}
+  .resume-grid{
+    width:auto; left:auto; right:auto; margin:0; padding:0; height:auto;
+    display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:36px; align-items:start;
+  }
+  .resume-card{max-width:none; width:100%; align-items:stretch; flex:none;}
+  .resume-label{font-family:'Space Mono',monospace; font-weight:700; font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-dark); margin:0 0 10px;}
+  .resume-card .resume-frame{
+    display:block; flex:none; width:100%; background:#fff; border-radius:6px; overflow:hidden;
+    box-shadow:0 0 0 1px var(--rule), 0 10px 26px -16px rgba(0,0,0,0.4); transform:none !important;
+  }
+  .resume-card .resume-frame img{width:100%; height:auto; max-width:100%; max-height:none; object-fit:contain;}
+  .resume-card:hover .resume-frame{box-shadow:0 0 0 2px var(--purple);}
+  .resume-card .resume-open{font-size:12px; margin-top:10px; color:var(--muted);}
+  .resume-card:hover .resume-open{color:var(--purple);}
+  @media (max-width:760px){ .resume-grid{grid-template-columns:1fr; gap:32px;} }
+
+  /* ---- ABOUT: portrait + biography ---- */
+  .about-grid{grid-template-columns:minmax(0,0.8fr) minmax(0,1.2fr); gap:48px; align-items:start;}
+  .about-grid p{font-size:16.5px; line-height:1.75; color:var(--ink-dark); max-width:64ch;}
+  .about-photo-frame .about-photo-inner{background:#e9eef0; border-radius:8px; box-shadow:0 0 0 1px var(--rule), 0 14px 32px -18px rgba(0,0,0,0.45); transform:none !important;}
+  .about-photo-frame:hover .about-photo-inner{box-shadow:0 0 0 2px var(--purple);}
+  .chip:hover{border-color:var(--purple); color:var(--purple);}
+  @media (max-width:720px){ .about-grid{grid-template-columns:1fr; gap:28px;} .about-photo-col{max-width:360px;} }
+
+  /* ---- CONTACT: simple form + social ---- */
+  .contact-wrap{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:48px; align-items:start;}
+  .field{margin-bottom:18px;}
+  .field label{font-size:12.5px; color:var(--ink-dark); letter-spacing:.06em; margin-bottom:7px;}
+  .field input, .field textarea{background:#fff; color:var(--ink-dark); border:1px solid rgba(20,20,20,0.35); font-size:15px; padding:12px 14px;}
+  .field input:focus, .field textarea:focus{border-color:var(--purple); box-shadow:0 0 0 3px rgba(81,27,138,0.18);}
+  .send-note{font-size:12.5px; color:var(--muted);}
+  .social-list a{border:1px solid rgba(20,20,20,0.3);}
+  .social-list a:hover, .social-list a:focus-visible{transform:none; box-shadow:none; border-color:var(--icon-ch, var(--purple));}
+
+  /* ---- EXHIBITION (consistent with the rest) ---- */
+  .exh-split{min-height:calc(100vh - var(--topbar-h) - 56px);}
+  .exh-card-title{font-weight:800;}
+  .exh-topic{padding:40px 24px 96px;}
+  .exh-feature{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.25fr); gap:36px; align-items:start;}
+  .exh-feature .exh-hero{margin:0;}
+  .exh-list{margin:0; padding-left:1.2em; font-size:18px; line-height:1.65; color:var(--ink-dark);}
+  .exh-list li{margin:0 0 4px;}
+  .exh-video{top:calc(var(--topbar-h) + 70px);}
+  @media (max-width:800px){ .exh-feature{grid-template-columns:1fr;} }
+
+  /* ---- overlays: plain dark scrim, no glow ---- */
+  .modal, .lightbox{background:rgba(8,8,12,0.94);}
+  .lightbox img{box-shadow:none;}
+
+  .showcase-videos-head{margin-top:56px;}
+  .film-note{margin:12px 0 0; font-size:14.5px; font-weight:700; color:var(--ink-dark);}
+  .film-note::before{content:'\2197\00a0';}
 </style>
 </head>
 <body>
@@ -549,6 +778,7 @@
   <button class="tab-btn active" data-tab="reel" style="--ch:var(--purple)"><span class="tab-dots"><span></span><span></span><span></span></span>REEL</button>
   <button class="tab-btn" data-tab="videos" style="--ch:var(--magenta)"><span class="tab-dots"><span></span><span></span><span></span></span>VIDEOS</button>
   <button class="tab-btn" data-tab="images" style="--ch:var(--raspberry)"><span class="tab-dots"><span></span><span></span><span></span></span>IMAGES</button>
+  <button class="tab-btn" data-tab="exhibition" style="--ch:var(--olive)"><span class="tab-dots"><span></span><span></span><span></span></span>EXHIBITION</button>
   <button class="tab-btn" data-tab="resume" style="--ch:var(--emerald)"><span class="tab-dots"><span></span><span></span><span></span></span>RESUME</button>
   <button class="tab-btn" data-tab="about" style="--ch:var(--olive)"><span class="tab-dots"><span></span><span></span><span></span></span>ABOUT</button>
   <button class="tab-btn" data-tab="contact" style="--ch:var(--purple)"><span class="tab-dots"><span></span><span></span><span></span></span>CONTACT</button>
@@ -571,7 +801,9 @@
   <!-- VIDEOS -->
   <section class="panel" id="videos">
     <h2>Videos</h2>
+    <div class="section-head"><h3>Reels</h3></div>
     <div class="reel-strip" id="reelStrip" aria-label="Vertical video reels — playing on loop, muted"></div>
+    <div class="section-head"><h3>Films &amp; Projects</h3><p>Longer videos &mdash; press play on any project.</p></div>
     <div class="video-scroll-list" id="videoGrid" role="list" aria-label="Video projects"></div>
   </section>
 
@@ -581,40 +813,117 @@
     <div class="image-grid" id="imageGrid" role="list" aria-label="Image gallery"></div>
   </section>
 
+  <!-- EXHIBITION -->
+  <section class="panel" id="exhibition">
+
+    <!-- landing: two clickable halves -->
+    <div class="exh-split" id="exhHome">
+      <button class="exh-card" type="button" onclick="showExhibit('exhBlurring')">
+        <span class="exh-card-img"><img src="images/exhibition-blurring-the-lines.png" alt="Projection inside the geodesic dome at the Blurring the Lines exhibit"></span>
+        <span class="exh-card-text">
+          <h3 class="exh-card-title">Blurring the lines Exhibit. <span class="arrow" aria-hidden="true">&rarr;</span></h3>
+          <p class="exh-card-sub">New media exhibit : Geodesic Dome, VR, AR, Green Screen</p>
+        </span>
+      </button>
+      <button class="exh-card" type="button" onclick="showExhibit('exhShowcase')">
+        <span class="exh-card-img"><img src="images/exhibition-showcase.jpeg" alt="Filming on the green screen for the Cinema and Media Arts Showcase"></span>
+        <span class="exh-card-text">
+          <h3 class="exh-card-title">Cinema and Media Arts Showcase <span class="arrow" aria-hidden="true">&rarr;</span></h3>
+          <p class="exh-card-sub">Selected projects for 3rd year showcase</p>
+        </span>
+      </button>
+    </div>
+
+    <!-- topic 1 -->
+    <div class="exh-topic" id="exhBlurring" hidden>
+      <button class="exh-back" type="button" onclick="showExhibit('exhHome')">&larr; EXHIBITION</button>
+      <h2>Blurring the lines Exhibit.</h2>
+      <p class="exh-topic-sub">New media exhibit : Geodesic Dome, VR, AR, Green Screen</p>
+      <div class="exh-row">
+        <button class="exh-flyer" type="button" aria-label="View flyer full screen" onclick="openLightbox('exhBlurring', 0)">
+          <img src="images/blurring-the-lines-flyer.png" alt="ReVision Rising: Blurring the Lines exhibition flyer">
+        </button>
+        <video class="exh-video" src="images/exhibition-blurring-the-lines.mp4" poster="images/exhibition-video-poster.jpg" controls playsinline preload="metadata"></video>
+      </div>
+      <div class="exh-content exh-desc">
+        <p>LHEEP Labs, York University, and Queen&rsquo;s University have partnered on an exhibition that blurs boundaries by recentering resident authorship, posing vital questions about accountability, care, and belonging, and creating space for intercommunity collaboration in local Toronto communities.</p>
+        <p>Basma Gado and Octavia Riley have worked on content creation, community collaboration, research, and technology explorations to bring this exhibition all together.</p>
+        <div class="exh-item">
+          <h3>VR exhibit: &ldquo;Where the children still play&rdquo;</h3>
+          <p>This experience uses &ldquo;environmental horror&rdquo; to reveal how trauma lingers in public spaces, asking a vital question: whose environments are allowed to heal?</p>
+        </div>
+        <div class="exh-item">
+          <h3>AR installation: &ldquo;Our Little Legacies&rdquo;</h3>
+          <p>This experience examines how proximity to violence disrupts childhood, presenting aspirational neighbourhoods as imagined from a child&rsquo;s perspective.</p>
+        </div>
+        <div class="exh-item">
+          <h3>360 Dome short film: &ldquo;To those willing to see&rdquo;</h3>
+          <p>This experience invites viewers to unlearn what they think they know about Lawrence Heights and similar communities, while highlighting how residents work to sustain their own ecosystems of care, growth, and belonging.</p>
+        </div>
+        <div class="exh-item">
+          <h3>Audiovisual installation: &ldquo;At the dinner table&rdquo;</h3>
+          <p>This work demonstrates how cross-community collaboration and personal stories from Lawrence Heights blur perceived boundaries. Visitors are also invited to meet and engage with residents from Lawrence Heights and other communities.</p>
+        </div>
+        <!-- MORE CONTENT: copy any block below and paste it here
+        <figure style="margin:0"><img src="images/your-image.jpg" alt="Describe the image"><figcaption>Caption</figcaption></figure>
+        <figure style="margin:0"><video src="images/your-video.mp4" controls playsinline></video><figcaption>Caption</figcaption></figure>
+        -->
+      </div>
+      <div class="section-head showcase-videos-head"><h3>Exhibit Videos</h3></div>
+      <div class="video-scroll-list" id="blurringVideos" role="list" aria-label="Exhibit videos"></div>
+    </div>
+
+    <!-- topic 2 -->
+    <div class="exh-topic" id="exhShowcase" hidden>
+      <button class="exh-back" type="button" onclick="showExhibit('exhHome')">&larr; EXHIBITION</button>
+      <h2>Cinema and Media Arts Showcase</h2>
+      <p class="exh-topic-sub">Selected projects for 3rd year showcase</p>
+      <div class="exh-feature">
+        <button class="exh-hero" type="button" aria-label="View image full screen" onclick="openLightbox('exhShowcase', 0)">
+          <img src="images/exhibition-showcase.jpeg" alt="Filming on the green screen">
+        </button>
+        <div class="exh-content exh-desc">
+          <p>My projects were selected by professors to be showcased at the 3rd Year Cinema and Media Arts Exhibition among submissions from numerous students.</p>
+          <p>The projects demonstrated my creative and technical skills through various media production techniques, including:</p>
+          <ul class="exh-list">
+            <li>Green screen editing and compositing.</li>
+            <li>Virtual production and digital environments.</li>
+            <li>Geodesic dome creation and 3D rendering.</li>
+            <li>Audio editing and sound design.</li>
+            <li>Video editing and post-production.</li>
+          </ul>
+          <p>This experience allowed me to explore different media technologies, strengthen my technical skills, and bring creative ideas to life through digital production.</p>
+          <!-- MORE CONTENT: copy any block below and paste it here
+          <figure style="margin:0"><img src="images/your-image.jpg" alt="Describe the image"><figcaption>Caption</figcaption></figure>
+          <figure style="margin:0"><video src="images/your-video.mp4" controls playsinline></video><figcaption>Caption</figcaption></figure>
+          -->
+        </div>
+      </div>
+      <div class="section-head showcase-videos-head"><h3>Showcased Videos</h3></div>
+      <div class="video-scroll-list" id="showcaseVideos" role="list" aria-label="Showcased videos"></div>
+    </div>
+
+  </section>
+
   <!-- RESUME -->
 <section class="panel" id="resume">
   <h2>Resume</h2>
+  <p class="resume-actions"><a class="btn-download" href="images/Gado-Resume.pdf" download="Basma-Gado-Resume.pdf">&#8595; DOWNLOAD RESUME (PDF)</a></p>
 
   <div class="resume-grid">
-<!-- CV -->
+<!-- CV (rendered as an image of the full page, not cropped or zoomed) -->
 <a
   class="resume-card"
-  href="images/CV.pdf"
+  href="images/resume.png"
   onclick="openLightbox('resume', 0); return false;"
   style="--doc-ch:var(--purple)"
 >
-  <span
-    class="resume-frame spotlight cv-preview"
-    style="overflow:hidden; background:#fff; position:relative;"
-  >
-    <iframe
-      src="images/CV.pdf#page=1&zoom=fit&toolbar=0&navpanes=0&scrollbar=0"
-      title="Basma Gado CV"
-      loading="lazy"
-      style="
-        display:block;
-        width:100%;
-        height:100%;
-        min-height:500px;
-        border:0;
-        background:#fff;
-        pointer-events:none;
-      "
-    ></iframe>
+  <span class="resume-label">Resume</span>
+  <span class="resume-frame spotlight" style="background:#fff;">
+    <img src="images/resume.png" alt="Basma Gado resume">
   </span>
-
   <span class="resume-open">
-    VIEW FULL SIZE <span>↗</span>
+    VIEW FULL SCREEN <span>&#8599;</span>
   </span>
 </a>
     <!-- Diploma -->
@@ -624,6 +933,7 @@
       onclick="openLightbox('resume', 1); return false;"
       style="--doc-ch:var(--purple)"
     >
+      <span class="resume-label">Diploma</span>
       <span class="resume-frame spotlight">
         <img
           src="images/diploma.jpg"
@@ -892,6 +1202,13 @@
     title.textContent = v.title;
     card.appendChild(title);
 
+    if(v.desc){
+      const descEl = document.createElement('span');
+      descEl.className = 'reel-desc';
+      descEl.textContent = v.desc;
+      card.appendChild(descEl);
+    }
+
     const tagsEl = document.createElement('span');
     tagsEl.className = 'reel-tags';
     tagsEl.innerHTML = v.tags.slice(0,2).map(t=>`<span class="tag">${t}</span>`).join('');
@@ -921,40 +1238,105 @@
     });
   };
 
-  // ---- videos: stacked-card scroll (click any one, opens in the modal) ----
-  // each project is its own near-full-viewport panel, pinned to the top of the
-  // viewport while it's current; later panels get a higher z-index so each new
-  // one slides up and over the one before it as you scroll — a smooth, native-
-  // scroll "stack of cards" transition, no JS scroll-hijacking.
+  // ---- videos: long-form films — vertical list, large 16:9 players with title + description ----
   const videoGrid = document.getElementById('videoGrid');
-  videos.forEach((v,i)=>{
-    const ch = CH[i % CH.length];
+  const filmResets = [];
+  function stopAllFilms(except){ filmResets.forEach(fn=> fn(except)); }
+  window.__stopFilms = ()=> stopAllFilms(null);
+  const PLAY_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"></path></svg>';
+  function buildFilm(v, i, opts){
+    opts = opts || {};
     const num = String(i+1).padStart(2,'0');
     const isRealYoutubeId = v.id && !String(v.id).startsWith('PASTE-');
-    const thumb = v.type === 'youtube'
-      ? (isRealYoutubeId ? `https://img.youtube.com/vi/${v.id}/hqdefault.jpg` : v.poster)
-      : v.poster;
-    const card = document.createElement('button');
-    card.type = 'button';
-    card.className = 'vscroll-card' + (thumb ? '' : ' no-thumb');
-    card.style.setProperty('--card-ch', ch);
-    card.style.zIndex = String(i + 1);
-    card.setAttribute('role','listitem');
-    card.setAttribute('aria-label', `Play ${v.title} — video ${num} of ${videos.length}`);
-    card.innerHTML = `
-      <span class="vscroll-thumb">
-        ${thumb ? `<img src="${thumb}" alt="" loading="lazy">` : ''}
-      </span>
-      <span class="vscroll-content">
-        <span class="vscroll-title">${v.title}</span>
-        <span class="vscroll-tags">
-          ${v.tags.slice(0,2).map(t=>`<span class="tag">${t}</span>`).join('')}
-          <span class="vscroll-play-pill">▶ Play</span>
-        </span>
-      </span>`;
-    card.addEventListener('click', ()=> openModal(i));
-    videoGrid.appendChild(card);
-  });
+    const article = document.createElement('article');
+    article.className = 'film';
+    article.setAttribute('role','listitem');
+
+    const player = document.createElement('div');
+    player.className = 'film-player';
+
+    if(v.type === 'local'){
+      const vid = document.createElement('video');
+      vid.controls = true; vid.preload = 'none'; vid.playsInline = true;
+      if(v.poster) vid.poster = v.poster;
+      vid.src = 'videos/' + v.file;
+      vid.setAttribute('aria-label', v.title);
+      vid.addEventListener('play', ()=> stopAllFilms(vid));
+      player.appendChild(vid);
+      filmResets.push(except=>{ if(except !== vid) vid.pause(); });
+    } else {
+      const buildFacade = ()=>{
+        player.innerHTML = '';
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'film-facade';
+        btn.setAttribute('aria-label', `Play ${v.title}`);
+        const thumb = v.poster || (isRealYoutubeId ? `https://img.youtube.com/vi/${v.id}/maxresdefault.jpg` : '');
+        btn.innerHTML = (thumb ? `<img src="${thumb}" alt="" loading="lazy">` : '') + `<span class="film-play">${PLAY_SVG}</span>`;
+        const img = btn.querySelector('img');
+        if(img && !v.poster && isRealYoutubeId){
+          let fellBack = false;
+          const fallback = ()=>{ if(fellBack) return; fellBack = true; img.src = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`; };
+          img.addEventListener('error', fallback);
+          img.addEventListener('load', ()=>{ if(img.naturalWidth && img.naturalWidth <= 160) fallback(); });
+        }
+        btn.addEventListener('click', ()=>{
+          stopAllFilms(null);
+          const iframe = document.createElement('iframe');
+          const sep = v.src.includes('?') ? '&' : '?';
+          iframe.src = v.src + sep + 'autoplay=1';
+          iframe.title = v.title;
+          iframe.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture; fullscreen');
+          iframe.setAttribute('allowfullscreen', '');
+          player.innerHTML = '';
+          player.appendChild(iframe);
+        });
+        player.appendChild(btn);
+      };
+      buildFacade();
+      filmResets.push(()=>{ if(player.querySelector('iframe')) buildFacade(); });
+    }
+
+    const info = document.createElement('div');
+    info.className = 'film-info';
+    const head = document.createElement('div');
+    head.className = 'film-head';
+    head.innerHTML = `${opts.numbered === false ? '' : `<span class="film-num">${num}</span>`}<h4 class="film-title">${v.title}</h4><div class="film-tags">${v.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`;
+    const desc = document.createElement('p');
+    desc.className = 'film-desc';
+    desc.textContent = v.desc;
+    info.appendChild(head);
+    info.appendChild(desc);
+
+    article.appendChild(player);
+    if(v.note){
+      const note = document.createElement('p');
+      note.className = 'film-note';
+      note.textContent = v.note;
+      article.appendChild(note);
+    }
+    article.appendChild(info);
+    return article;
+  }
+  videos.forEach((v,i)=> videoGrid.appendChild(buildFilm(v,i)));
+
+  // ---- Cinema and Media Arts Showcase: videos shown there (copies of entries from the list above).
+  // To add more later, push another entry — either reuse one from `videos` by its YouTube id,
+  // or paste a full new entry like the ones in `videos` (type, id, src, title, desc, tags).
+  const showcaseVideos = [
+    (v=> v && Object.assign({}, v, {tags: v.tags.concat(['Equirectangular Projection','Geodesic Dome'])}))(videos.find(v=> v.id === 'NJ__vWXrw4g')),   // Miracle — 360° Camera View
+    videos.find(v=> v.id === 'QSEIJh9z2ic'),   // Rise of the Droids
+    // { type:"youtube", id:"VIDEO_ID", src:"https://www.youtube-nocookie.com/embed/VIDEO_ID?rel=0&modestbranding=1", title:"Title", desc:"Description", tags:["Tag"] },
+  ].filter(Boolean);
+  const showcaseGrid = document.getElementById('showcaseVideos');
+  showcaseVideos.forEach((v,i)=> showcaseGrid.appendChild(buildFilm(v,i,{numbered:false})));
+
+  // ---- Blurring the Lines Exhibit: videos shown there (add more entries the same way) ----
+  const blurringVideos = [
+    (v=> v && Object.assign({}, v, {note:'Watch on YouTube in full screen for the full experience.'}))(videos.find(v=> v.id === 'cfMIfu2KUjE')),   // To Those Willing to See
+  ].filter(Boolean);
+  const blurringGrid = document.getElementById('blurringVideos');
+  blurringVideos.forEach((v,i)=> blurringGrid.appendChild(buildFilm(v,i,{numbered:false})));
 
   // ---- images: gallery-wall grid (click any image, opens full size) ----
   const imageGrid = document.getElementById('imageGrid');
@@ -1039,12 +1421,19 @@
 const LIGHTBOX_SETS = {
   images: images,
 
+  exhBlurring: [
+    { src: 'images/blurring-the-lines-flyer.png', type: 'image', alt: 'ReVision Rising: Blurring the Lines exhibition flyer', title: 'ReVision Rising: Blurring the Lines' }
+  ],
+  exhShowcase: [
+    { src: 'images/exhibition-showcase.jpeg', type: 'image', alt: 'Filming on the green screen', title: 'Cinema and Media Arts Showcase' }
+  ],
+
   resume: [
     {
-      src: 'images/CV.pdf',
-      type: 'pdf',
-      alt: 'Basma Gado resume / CV',
-      title: 'CV'
+      src: 'images/resume.png',
+      type: 'image',
+      alt: 'Basma Gado resume',
+      title: 'Resume'
     },
     {
       src: 'images/diploma.jpg',
@@ -1153,6 +1542,11 @@ function renderLightbox(){
     else if(e.key==='ArrowRight'){ e.preventDefault(); lightboxNext(); }
   });
 
+  function showExhibit(id){
+    if(window.__stopFilms) window.__stopFilms();
+    ['exhHome','exhBlurring','exhShowcase'].forEach(function(x){ document.getElementById(x).hidden = (x !== id); });
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
   function switchTab(name){
     document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.id===name));
     document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===name));
@@ -1160,8 +1554,10 @@ function renderLightbox(){
     if(btn) document.documentElement.style.setProperty('--accent', getComputedStyle(btn).getPropertyValue('--ch'));
     document.getElementById('deck').classList.remove('open');
     window.scrollTo({top:0, behavior:'smooth'});
+    if(name === 'exhibition'){ ['exhHome','exhBlurring','exhShowcase'].forEach(function(x){ document.getElementById(x).hidden = (x !== 'exhHome'); }); }
     if(name === 'videos' && window.__playReels){ window.__playReels(); }
     else if(window.__pauseReels){ window.__pauseReels(); }
+    if(name !== 'videos' && window.__stopFilms){ window.__stopFilms(); }
   }
   document.querySelectorAll('.tab-btn').forEach(b=> b.addEventListener('click', ()=> switchTab(b.dataset.tab)));
   document.getElementById('menuBtn').addEventListener('click', ()=> document.getElementById('deck').classList.toggle('open'));
