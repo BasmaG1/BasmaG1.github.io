@@ -578,7 +578,8 @@
   .btn-download:hover{background:var(--purple); transform:translateY(-2px);}
   .exh-row{display:grid; grid-template-columns:minmax(0,0.8fr) minmax(0,1.4fr); gap:28px; align-items:start; margin:0 0 34px;}
   .exh-flyer{display:block; width:100%; padding:0; border:0; background:none; cursor:zoom-in; border-radius:7px; overflow:hidden;}
-  .exh-flyer img{width:100%; display:block;}
+  .exh-flyer{aspect-ratio:4/5; background:#14233f;}
+  .exh-flyer img{width:100%; height:100%; object-fit:cover; display:block;}
   .exh-video{width:100%; aspect-ratio:16/9; display:block; border-radius:7px; background:#000; position:sticky; top:130px;}
   .exh-item h3{font-family:'Unbounded',sans-serif; font-size:18px; font-weight:700; margin:0 0 8px; color:var(--text-dark);}
   @media (max-width:800px){ .exh-row{grid-template-columns:1fr;} .exh-video{position:static;} }
@@ -819,7 +820,7 @@
     <!-- landing: two clickable halves -->
     <div class="exh-split" id="exhHome">
       <button class="exh-card" type="button" onclick="showExhibit('exhBlurring')">
-        <span class="exh-card-img"><img src="images/exhibition-blurring-the-lines.png" alt="Projection inside the geodesic dome at the Blurring the Lines exhibit"></span>
+        <span class="exh-card-img"><img src="images/exhibition-blurring-the-lines.jpg" alt="Projection inside the geodesic dome at the Blurring the Lines exhibit"></span>
         <span class="exh-card-text">
           <h3 class="exh-card-title">Blurring the lines Exhibit. <span class="arrow" aria-hidden="true">&rarr;</span></h3>
           <p class="exh-card-sub">New media exhibit : Geodesic Dome, VR, AR, Green Screen</p>
@@ -841,10 +842,10 @@
       <p class="exh-topic-sub">New media exhibit : Geodesic Dome, VR, AR, Green Screen</p>
       <div class="exh-row">
         <button class="exh-flyer" type="button" aria-label="View flyer full screen" onclick="openLightbox('exhBlurring', 0)">
-          <img src="images/blurring-the-lines-flyer.png" alt="ReVision Rising: Blurring the Lines exhibition flyer">
+          <img src="images/blurring-the-lines-flyer.jpg" width="1080" height="1350" decoding="async" alt="ReVision Rising: Blurring the Lines exhibition flyer">
         </button>
-        <video class="exh-video" poster="images/exhibition-video-poster.jpg" controls playsinline preload="metadata">
-          <source src="images/exhibition-blurring-the-lines.mp4" type="video/mp4">
+        <video class="exh-video" poster="images/exhibition-video-poster.jpg?v=2" controls playsinline preload="metadata">
+          <source src="images/exhibition-blurring-the-lines.mp4?v=2" type="video/mp4">
           Your browser can&rsquo;t play this video. <a href="images/exhibition-blurring-the-lines.mp4">Download it here</a>.
         </video>
       </div>
@@ -1425,7 +1426,7 @@ const LIGHTBOX_SETS = {
   images: images,
 
   exhBlurring: [
-    { src: 'images/blurring-the-lines-flyer.png', type: 'image', alt: 'ReVision Rising: Blurring the Lines exhibition flyer', title: 'ReVision Rising: Blurring the Lines' }
+    { src: 'images/blurring-the-lines-flyer.jpg', type: 'image', alt: 'ReVision Rising: Blurring the Lines exhibition flyer', title: 'ReVision Rising: Blurring the Lines' }
   ],
   exhShowcase: [
     { src: 'images/exhibition-showcase.jpeg', type: 'image', alt: 'Filming on the green screen', title: 'Cinema and Media Arts Showcase' }
